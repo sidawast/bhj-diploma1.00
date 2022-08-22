@@ -18,7 +18,7 @@ const createRequest = (options = {}) => {
             Object.entries(options.data).forEach(v => formData.append(...v));
         }
     }
-    xhr.onreadystatechange = () => {
+   /* xhr.onreadystatechange = () => {
         if(xhr.readyState === XMLHttpRequest.DONE) {
             let err = null;
             let rest = null;
@@ -35,6 +35,21 @@ const createRequest = (options = {}) => {
             }
             options.callback(err, rest);
         }
+    }*/
+    xhr.onload = () => {
+        let err = null;
+        let rest = null;
+        if(xhr.status === 200) {
+            const r = xhr.response;
+            if (r && r.success) {
+            rest = r;
+           } else {
+            err = r;
+           }
+        } else {
+            err = new Error('...');
+        }
+        options.callback(err, rest);        
     }
 
     xhr.open(options.method, url);
