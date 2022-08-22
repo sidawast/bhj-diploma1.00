@@ -17,17 +17,19 @@ class CreateTransactionForm extends AsyncForm {
    * Обновляет в форме всплывающего окна выпадающий список
    * */
   renderAccountsList() {
-    let select = document.querySelectorAll('.accounts-select'); // Переписать на свой лад
+    let select = document.querySelectorAll('.accounts-select'); // Переписать по требованию преподавателя
     Account.list(null, (err, resp) => {
       select.forEach(item => item.innerHTML = "")
 
       if(resp) {
         resp.data.forEach(element => { 
-          select.forEach(item => item.insertAdjacentHTML('beforeend',
-           `<option value="${element.id}">${element.name}</option>`)
-           
-          )
+          Array.from(select).reduce((sum, current) => sum + current.insertAdjacentHTML('beforeend', `<option value="${element.id}">${element.name}</option>`))
         });
+        /*resp.data.forEach(element => { 
+          select.forEach(item => item.insertAdjacentHTML('beforeend',
+           `<option value="${element.id}">${element.name}</option>`)           
+          )
+        }); */
       }
     })
   }
@@ -42,8 +44,12 @@ class CreateTransactionForm extends AsyncForm {
     
     Transaction.create(data, (err, response) => {
       if (response) {
-        if(data.type == 'income') {App.getModal('newIncome').close();}    // let windowName = 'new' + type[0].toUpperCase() + type.slice(1);
-        if(data.type == 'expense') {App.getModal('newExpense').close();}
+        if(data.type == 'income') {
+          App.getModal('newIncome').close();
+        }    // let windowName = 'new' + type[0].toUpperCase() + type.slice(1);
+        if(data.type == 'expense') {
+          App.getModal('newExpense').close();
+        }
         App.update();
         this.element.reset();
       } 

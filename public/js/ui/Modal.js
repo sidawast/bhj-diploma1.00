@@ -22,7 +22,7 @@ class Modal {
    * (с помощью метода Modal.onClose)
    * */
   registerEvents() {
-    const closeButton = this.element.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
+    this.element.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
         
       btn.onclick = e => {
         

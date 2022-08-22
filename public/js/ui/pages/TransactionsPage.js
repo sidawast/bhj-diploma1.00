@@ -37,14 +37,20 @@ class TransactionsPage {
       }
     
       
-      document.querySelectorAll('.content').forEach(btn => btn.onclick = e => {
+      document.querySelector('.content').onclick = e => {
         if (e.target.closest('.transaction__remove')) {
           console.log(e.target.closest('.transaction__remove'))
           this.removeTransaction(e.target.dataset.id);
         }
       e.preventDefault();     
-        })
-      
+        }
+      /*document.querySelectorAll('.content').forEach(btn => btn.onclick = e => {
+        if (e.target.closest('.transaction__remove')) {
+          console.log(e.target.closest('.transaction__remove'))
+          this.removeTransaction(e.target.dataset.id);
+        }
+      e.preventDefault();     
+        }) */
   }
 
   /**
@@ -82,13 +88,8 @@ class TransactionsPage {
    * */
   removeTransaction( id ) {
     if(confirm("Вы действительно хотите удалить транзакцию ?")) {
-      Transaction.remove( {id: id} , (err, resp) => { // При нажатие будет удалена транзакция ID
-       
-        App.updateWidgets();
-        App.updateForms();
-        App.updatePages();  
+      Transaction.remove( {id: id} , (err, resp) => { // При нажатие будет удалена транзакция ID     
         App.update();        
-        this.update();
 //  Не происходит обновление панели транзакции
       });
     }
